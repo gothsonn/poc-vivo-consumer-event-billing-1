@@ -23,7 +23,7 @@ spec:
         - containerPort: 9000
         envFrom:
         - configMapRef:
-            name: cm-kafka-cd
+            name: cm-kafka-op
         - secretRef:
             name: sc-azure-data
 ---
