@@ -7,5 +7,6 @@ RUN mvn -B -f pom.xml clean package -DskipTests=true
 
 FROM openjdk:11.0.16-jdk
 COPY --from=build target/*.jar application.jar
+RUN mkdir data || true
 EXPOSE 9000
 ENTRYPOINT ["java", "-Dspring.profiles.active=kafka", "-jar", "application.jar"]
