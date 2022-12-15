@@ -8,7 +8,7 @@ node('docker-node') {
     deleteDir()
     checkout scm
   }
-  stage('Sonar Analysis') {
+  stage('SonarQube Analysis') {
     withSonarQubeEnv() {
       sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1"
     }
