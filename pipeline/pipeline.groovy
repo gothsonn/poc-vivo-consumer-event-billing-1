@@ -12,7 +12,7 @@ node('docker-node') {
       image = docker.build("$name_img")
     }
   stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
+    def mvn = tool '/usr/share/maven';
     withSonarQubeEnv() {
       sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1"
     }
