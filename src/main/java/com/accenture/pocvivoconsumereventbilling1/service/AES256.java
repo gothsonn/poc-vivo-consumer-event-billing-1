@@ -1,6 +1,8 @@
 package com.accenture.pocvivoconsumereventbilling1.service;
 
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -14,12 +16,13 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+@Service
+@NoArgsConstructor
 public class AES256 {
 
-    private AES256(){}
+    @Value("${secret.key}")
+    private String SECRET_KEY_USER;
 
-    @Value("SECRET_KEY")
-    private static String SECRET_KEY;
     private static final byte[] SALT;
     private static final SecureRandom random;
     private static final IvParameterSpec ivspec;
@@ -32,10 +35,10 @@ public class AES256 {
         ivspec = new IvParameterSpec(bytesIV);
     }
 
-    public static String encrypt(String strToEncrypt) {
+    public String encrypt(String strToEncrypt) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT, 65536, 256);
+            KeySpec spec = new PBEKeySpec(SECRET_KEY_USER.toCharArray(), SALT, 65536, 256);
             SecretKey tmp = factory.generateSecret(spec);
             SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
@@ -48,10 +51,10 @@ public class AES256 {
         return null;
     }
 
-    public static String decrypt(String strToDecrypt) {
+    public String decrypt(String strToDecrypt) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT, 65536, 256);
+            KeySpec spec = new PBEKeySpec(SECRET_KEY_USER.toCharArray(), SALT, 65536, 256);
             SecretKey tmp = factory.generateSecret(spec);
             SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
