@@ -3,7 +3,7 @@ node('docker-node') {
   def name_img = "${env.JOB_NAME}"
   def image
   def version = "${buildNumber}"
-  def pubregistry = "nexus.devops.dvpoc.com.br/"
+  def pubregistry = "registry.devops.dvpoc.com.br/"
   stage('Checkout Repository') {
     deleteDir()
     checkout scm
@@ -12,10 +12,7 @@ node('docker-node') {
     withSonarQubeEnv('sonar-poc') {
       sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1"
     }
-  }
-  stage("Quality gate") {
-    waitForQualityGate abortPipeline: true
-  }                     
+  }                
   stage('Build Image'){
       image = docker.build("$name_img")
     }
