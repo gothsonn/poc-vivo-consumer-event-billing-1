@@ -1,7 +1,6 @@
 package com.accenture.pocvivoconsumereventbilling1.service;
 
 import com.accenture.pocvivoconsumereventbilling1.model.FinancialAccount;
-import com.azure.storage.blob.BlobClient;
 import com.jcraft.jsch.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,6 @@ public class SftpService {
 
     private ChannelSftp setupJsch() throws JSchException {
         JSch jsch = new JSch();
-//        jsch.setKnownHosts(knowHosts);
         Session jschSession = jsch.getSession(user, host);
         jschSession.setConfig("StrictHostKeyChecking", "no");
         jschSession.setPassword(password);

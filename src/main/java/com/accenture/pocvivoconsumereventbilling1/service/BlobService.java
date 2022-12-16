@@ -35,7 +35,7 @@ public class BlobService {
         this.encryptedFinancialAccount = encryptedFinancialAccount;
     }
 
-    public String uploadFile(String fileName) throws IOException {
+    public String uploadFile(String fileName) {
 
         String localPath = generateFile.getLocalPath();
 

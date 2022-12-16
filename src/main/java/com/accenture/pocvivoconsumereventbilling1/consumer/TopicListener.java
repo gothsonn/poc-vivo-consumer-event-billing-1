@@ -52,17 +52,14 @@ public class TopicListener {
         log.info("Partion: {}", payload.partition());
         log.info("Order: {}", payload.value());
         try {
-
             FinancialAccountCreateEvent consumeToGenerateFile =  objectMapper.readValue(payload.value(), FinancialAccountCreateEvent.class);
             String  encryptedString = encryptedFinancialAccount.objectToStringEncoded(consumeToGenerateFile.getPayload().getFinancialAccount());
             String id = consumeToGenerateFile.getPayload().getFinancialAccount().getId();
             String filename = generateFile.generate(encryptedString,id);
             sftpService.uploadFile(filename);
             log.info("FinancialAccountCreateEvent: {}", encryptedString);
-
         } catch (IOException e) {
             log.error("Couldn't serialize response for content type application/json", e);
-
         } catch (JSchException e) {
             throw new RuntimeException(e);
         } catch (SftpException e) {
