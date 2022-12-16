@@ -8,6 +8,11 @@ node('docker-node') {
     deleteDir()
     checkout scm
   }
+  stage('SonarQube Analysis') {
+    withSonarQubeEnv() {
+      sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1 -Dsonar.login=sqp_243f254fafb201963fc0bab3e3288312b5bc3330"
+    }
+  }
   stage('Build Image'){
       image = docker.build("$name_img")
     }
@@ -22,11 +27,6 @@ node('docker-node') {
     imgrm = sh(script: "docker images $name_img:latest -q", returnStdout: true).trim()
     println imgrm
     sh("docker rmi -f $imgrm")
-  }
-  stage('SonarQube Analysis') {
-    withSonarQubeEnv() {
-      sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1 -Dsonar.login=sqp_243f254fafb201963fc0bab3e3288312b5bc3330"
-    }
   }
   stage('Deploy Image'){
     def fullname = "${name_img}:${version}"
