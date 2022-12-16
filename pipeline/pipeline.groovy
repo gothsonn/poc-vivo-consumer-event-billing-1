@@ -9,10 +9,15 @@ node('docker-node') {
     checkout scm
   }
   stage('SonarQube Analysis') {
-    withSonarQubeEnv() {
+    withSonarQubeEnv('sona'-poc') {
       sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1 -Dsonar.login=sqp_243f254fafb201963fc0bab3e3288312b5bc3330"
     }
   }
+  stage("Quality gate") {
+    steps {
+        waitForQualityGate abortPipeline: true
+    }
+  }                     
   stage('Build Image'){
       image = docker.build("$name_img")
     }
