@@ -14,9 +14,7 @@ node('docker-node') {
     }
   }
   stage("Quality gate") {
-    steps {
-        waitForQualityGate abortPipeline: true
-    }
+    waitForQualityGate abortPipeline: true
   }                     
   stage('Build Image'){
       image = docker.build("$name_img")
