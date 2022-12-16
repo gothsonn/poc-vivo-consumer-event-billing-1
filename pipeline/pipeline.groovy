@@ -9,7 +9,7 @@ node('docker-node') {
     checkout scm
   }
   stage('SonarQube Analysis') {
-    withSonarQubeEnv('sona'-poc') {
+    withSonarQubeEnv('sonar-poc') {
       sh "/usr/share/maven/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=consumer-event-billing-1 -Dsonar.login=sqp_243f254fafb201963fc0bab3e3288312b5bc3330"
     }
   }
