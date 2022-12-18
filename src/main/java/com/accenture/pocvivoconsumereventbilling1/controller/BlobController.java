@@ -23,4 +23,8 @@ public class BlobController {
         return sftpService.downloadFile(id);
     }
 
+//    @GetMapping("/texto/{id}")
+//    public String textoLogico(@PathVariable("id") String id) {
+//        return sftpService.testeChamada(id);
+//    }
 }
